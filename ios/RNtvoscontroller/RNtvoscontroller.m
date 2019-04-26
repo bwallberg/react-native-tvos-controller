@@ -25,33 +25,39 @@ RCT_EXPORT_METHOD(connect) {
 }
 
 RCT_EXPORT_METHOD(connectTap) {
-    self.recognizeSimultaneously = NO;
-    UIView *rootView = [self getRootViewController].view;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.recognizeSimultaneously = NO;
+        UIView *rootView = [self getRootViewController].view;
     
-    [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypePlayPause selector:@selector(respondToPlayPauseButton)];
-    [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypeMenu selector:@selector(respondToMenuButton)];
-    [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypeSelect selector:@selector(respondToSelectButton)];
-    [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypeUpArrow selector:@selector(respondToUpArrowButton)];
-    [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypeDownArrow selector:@selector(respondToDownArrowButton)];
-    [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypeLeftArrow selector:@selector(respondToLeftArrowButton)];
-    [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypeRightArrow selector:@selector(respondToRightArrowButton)];
+        [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypePlayPause selector:@selector(respondToPlayPauseButton)];
+        [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypeMenu selector:@selector(respondToMenuButton)];
+        [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypeSelect selector:@selector(respondToSelectButton)];
+        [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypeUpArrow selector:@selector(respondToUpArrowButton)];
+        [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypeDownArrow selector:@selector(respondToDownArrowButton)];
+        [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypeLeftArrow selector:@selector(respondToLeftArrowButton)];
+        [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypeRightArrow selector:@selector(respondToRightArrowButton)];
+    });
 }
 
 RCT_EXPORT_METHOD(connectSwipe) {
-    self.recognizeSimultaneously = NO;
-    UIView *rootView = [self getRootViewController].view;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.recognizeSimultaneously = NO;
+        UIView *rootView = [self getRootViewController].view;
     
-    [self addSwipeGestureRecognizerWithDirection:rootView direction:UISwipeGestureRecognizerDirectionRight];
-    [self addSwipeGestureRecognizerWithDirection:rootView direction:UISwipeGestureRecognizerDirectionLeft];
-    [self addSwipeGestureRecognizerWithDirection:rootView direction:UISwipeGestureRecognizerDirectionUp];
-    [self addSwipeGestureRecognizerWithDirection:rootView direction:UISwipeGestureRecognizerDirectionDown];
+        [self addSwipeGestureRecognizerWithDirection:rootView direction:UISwipeGestureRecognizerDirectionRight];
+        [self addSwipeGestureRecognizerWithDirection:rootView direction:UISwipeGestureRecognizerDirectionLeft];
+        [self addSwipeGestureRecognizerWithDirection:rootView direction:UISwipeGestureRecognizerDirectionUp];
+        [self addSwipeGestureRecognizerWithDirection:rootView direction:UISwipeGestureRecognizerDirectionDown];
+    });
 }
 
 RCT_EXPORT_METHOD(connectLongPress) {
-    self.recognizeSimultaneously = NO;
-    UIView *rootView = [self getRootViewController].view;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.recognizeSimultaneously = NO;
+        UIView *rootView = [self getRootViewController].view;
     
-    [self addLongPressGestureRecognizer:rootView];
+        [self addLongPressGestureRecognizer:rootView];
+    });
 }
 
 RCT_EXPORT_METHOD(disconnect) {
@@ -61,53 +67,62 @@ RCT_EXPORT_METHOD(disconnect) {
 }
 
 RCT_EXPORT_METHOD(disconnectTap) {
-    if (!tapRecognizers) return;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!tapRecognizers) return;
 
-    UIView *view = [self getRootViewController].view;
+        UIView *view = [self getRootViewController].view;
     
-    for (UIGestureRecognizer *recognizer in tapRecognizers)
-    {
-        recognizer.enabled = NO;
-        [view removeGestureRecognizer:recognizer];
-    }
+        for (UIGestureRecognizer *recognizer in tapRecognizers)
+        {
+            recognizer.enabled = NO;
+            [view removeGestureRecognizer:recognizer];
+        }
+    });
 }
 
 RCT_EXPORT_METHOD(disconnectSwipe) {
-    if (!swipeRecognizers) return;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!swipeRecognizers) return;
 
-    UIView *view = [self getRootViewController].view;
+        UIView *view = [self getRootViewController].view;
     
-    for (UIGestureRecognizer *recognizer in swipeRecognizers)
-    {
-        recognizer.enabled = NO;
-        [view removeGestureRecognizer:recognizer];
-    }
+        for (UIGestureRecognizer *recognizer in swipeRecognizers)
+        {
+            recognizer.enabled = NO;
+            [view removeGestureRecognizer:recognizer];
+        }
+    });
 }
 
 RCT_EXPORT_METHOD(disconnectLongPress) {
-    if (!longPressRecognizers) return;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!longPressRecognizers) return;
 
-    UIView *view = [self getRootViewController].view;
-    
-    for (UIGestureRecognizer *recognizer in longPressRecognizers)
-    {
-        recognizer.enabled = NO;
-        [view removeGestureRecognizer:recognizer];
-    }
+        UIView *view = [self getRootViewController].view;
+        for (UIGestureRecognizer *recognizer in longPressRecognizers)
+        {
+            recognizer.enabled = NO;
+            [view removeGestureRecognizer:recognizer];
+        }
+    });
 }
 
 RCT_EXPORT_METHOD(enablePanGesture) {
-    UIView *rootView = [self getRootViewController].view;
-    panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(respondToPanGesture:)];
-    [rootView addGestureRecognizer:panGestureRecognizer];
-    panGestureRecognizer.delegate = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIView *rootView = [self getRootViewController].view;
+        panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(respondToPanGesture:)];
+        [rootView addGestureRecognizer:panGestureRecognizer];
+        panGestureRecognizer.delegate = self;
+    });
 }
 
 RCT_EXPORT_METHOD(disablePanGesture) {
-    if(panGestureRecognizer != nil){
-        UIView *rootView = [self getRootViewController].view;
-        [rootView removeGestureRecognizer:panGestureRecognizer];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(panGestureRecognizer != nil){
+            UIView *rootView = [self getRootViewController].view;
+            [rootView removeGestureRecognizer:panGestureRecognizer];
+        }
+    });
 }
 
 RCT_EXPORT_METHOD(enableRecognizeSimultaneously) {
