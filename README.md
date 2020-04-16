@@ -146,9 +146,11 @@ var panSubscription = reactNativeTvosController.subscribe('PAN',
       console.log("panned");
       console.log(JSON.stringify(e));
       /*
-      e.state : "Changed"
+      e.state : "Began" || "Changed" || "Ended"
       e.x : (x offset)
       e.y : (y offset)
+      e.velocityX : number
+      e.velocityY : number
       */
     });
     panSubscription(); //Cancel Subscription
