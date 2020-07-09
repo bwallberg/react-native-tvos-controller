@@ -28,7 +28,8 @@ RCT_EXPORT_METHOD(connectTap) {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.recognizeSimultaneously = NO;
         UIView *rootView = [self getRootViewController].view;
-    
+        tapRecognizers = [[NSMutableArray alloc] init];
+
         [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypePlayPause selector:@selector(respondToPlayPauseButton)];
         [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypeMenu selector:@selector(respondToMenuButton)];
         [self addTapGestureRecognizerWithType:rootView pressType:UIPressTypeSelect selector:@selector(respondToSelectButton)];
@@ -43,7 +44,8 @@ RCT_EXPORT_METHOD(connectSwipe) {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.recognizeSimultaneously = NO;
         UIView *rootView = [self getRootViewController].view;
-    
+        swipeRecognizers = [[NSMutableArray alloc] init];
+
         [self addSwipeGestureRecognizerWithDirection:rootView direction:UISwipeGestureRecognizerDirectionRight];
         [self addSwipeGestureRecognizerWithDirection:rootView direction:UISwipeGestureRecognizerDirectionLeft];
         [self addSwipeGestureRecognizerWithDirection:rootView direction:UISwipeGestureRecognizerDirectionUp];
@@ -55,7 +57,8 @@ RCT_EXPORT_METHOD(connectLongPress) {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.recognizeSimultaneously = NO;
         UIView *rootView = [self getRootViewController].view;
-    
+        longPressRecognizers = [[NSMutableArray alloc] init];
+
         [self addLongPressGestureRecognizer:rootView];
     });
 }
@@ -147,6 +150,9 @@ RCT_EXPORT_METHOD(disableRecognizeSimultaneously) {
     tapGestureRecognizer.allowedPressTypes = @[[NSNumber numberWithInteger:pressType]];
     [view addGestureRecognizer:tapGestureRecognizer];
     tapGestureRecognizer.delegate = self;
+
+    [tapRecognizers addObject:tapGestureRecognizer];
+
     return tapGestureRecognizer;
 }
 
@@ -155,6 +161,9 @@ RCT_EXPORT_METHOD(disableRecognizeSimultaneously) {
     swipeGestureRecognizer.direction = direction;
     [view addGestureRecognizer:swipeGestureRecognizer];
     swipeGestureRecognizer.delegate = self;
+
+    [swipeRecognizers addObject:swipeGestureRecognizer];
+
     return swipeGestureRecognizer;
 }
 
@@ -162,6 +171,9 @@ RCT_EXPORT_METHOD(disableRecognizeSimultaneously) {
     UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(respondToLongPressGesture:)];
     [view addGestureRecognizer:longPressGestureRecognizer];
     longPressGestureRecognizer.delegate = self;
+
+    [longPressRecognizers addObject:longPressGestureRecognizer];
+
     return longPressGestureRecognizer;
 }
 
