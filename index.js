@@ -43,9 +43,9 @@ import {
           NativeModules.ReactNativeTvosController.disableRecognizeSimultaneously();
       },
       subscribe: function(event, callback){
-          nativeEventEmitter.addListener(event, callback);
+          const subscription = nativeEventEmitter.addListener(event, callback);
           return function(){
-              nativeEventEmitter.removeListener(event, callback);
+            subscription.remove();
           }
       }
   }
